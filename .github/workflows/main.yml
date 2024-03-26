@@ -16,5 +16,5 @@ jobs:
       with:
         server: 62.72.37.105
         username: u820736800.avvFtp
-        password: ${{ CONTEXT.FTP_PASSWORD }}
+        password: Ha@222891
         server-dir: /
