@@ -1,28 +1,32 @@
-version: 0.2
+name: Laravel
 
-phases:
-  install:
-    runtime-versions:
-      php: 8.2
-    commands:
-      - apt-get update -y
-      - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-      - apt-get install -y libpq-dev libzip-dev
-      - apt-get install -y php-pgsql
-      - curl -sS https://getcomposer.org/installer -o composer-setup.php
-      - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-  pre_build:
-    commands:
-      - composer update
-      - npm install
-      - composer require --dev phpunit/phpunit
-  build:
-    commands:
-      - php artisan test
-artifacts:
-  files:
-    - "**/*"
-  name: $(date +%Y-%m-%dT%H:%M:%S).zip
-proxy:
-  upload-artifacts: yes
-  logs: yes
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: "latest"
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: composer install
+
+      - name: Setup Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run migrations
+        run: php artisan migrate --no-interaction
+
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: php artisan test tests/Unit
