@@ -19,7 +19,9 @@ jobs:
     - name: Config clearing
       run: php artisan config:clear
     - name: cache clearing
-      run: php artisan cache:clear
+      run: php artisan cache:clear  -
+    - name: generate app key
+      run: php artisan key:generate
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
