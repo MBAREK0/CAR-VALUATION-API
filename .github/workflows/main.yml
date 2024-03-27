@@ -16,6 +16,10 @@ jobs:
         composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Config clearing
+      run: php artisan config:clear
+    - name: cache clearing
+      run: php artisan cache:clear
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
