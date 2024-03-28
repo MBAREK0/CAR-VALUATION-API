@@ -3,17 +3,10 @@
 namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
+
 
 
 class MyTest extends TestCase
@@ -31,7 +24,15 @@ class MyTest extends TestCase
     public function test_Example()
     {
 
-        $user = User::factory()->create();
+        $user = User::create([
+            "name"=> "test",
+            "email"=> "test@test.com",
+            "password"=> bcrypt("password"),
+            "role"=>"user"
+        ]);
+        $this->assertDatabaseHas('users', [
+            'email' => 'test@test.com',
+        ]);
 
     }
 }
