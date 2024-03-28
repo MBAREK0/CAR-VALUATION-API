@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
 
-    'middleware' => ['api','auth'],
+    'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
@@ -29,11 +29,23 @@ Route::group([
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', [AuthController::class,'refresh']);
     Route::post('me', [AuthController::class,'me']);
+
+
+});
+
+
+
+Route::group([
+
+    'middleware' => ['api','auth'],
+    'prefix' => 'auth'
+
+], function ($router) {
+
     Route::get('/cars', [VoitureController::class, 'index']);
     Route::post('/estimateprix', [VoitureController::class,'estimateprix']);
 
 });
-
 
 
 
