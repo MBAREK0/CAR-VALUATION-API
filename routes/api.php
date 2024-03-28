@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CrudUserController;
+use App\Http\Controllers\VoitureController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => ['api','auth'],
     'prefix' => 'auth'
 
 ], function ($router) {
@@ -28,6 +29,8 @@ Route::group([
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', [AuthController::class,'refresh']);
     Route::post('me', [AuthController::class,'me']);
+    Route::get('/cars', [VoitureController::class, 'index']);
+    Route::post('/estimateprix', [VoitureController::class,'estimateprix']);
 
 });
 
@@ -36,17 +39,13 @@ Route::group([
 
 Route::group([
 
-    'middleware' => ['api','admin'],
+    'middleware' => ['api','admin','auth'],
     'prefix' => 'admin'
 
 ], function ($router) {
 
 Route::get('/users', [CrudUserController::class, 'list']);
 Route::post('/users/save', [CrudUserController::class, 'save']);
-
-// Fsend useing json not form
 Route::get('/users/find', [CrudUserController::class, 'find']);
-
-// Delete a user
 Route::delete('/users/delete', [CrudUserController::class, 'delete']);
 });
