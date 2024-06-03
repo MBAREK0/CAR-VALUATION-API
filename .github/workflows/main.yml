@@ -13,7 +13,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: 82.197.80.104
+        server: ftp.aav.coders-strike.tech
         username: u820736800.avvFtp
         password: Password123
         server-dir: /
